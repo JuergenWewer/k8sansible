@@ -1,0 +1,38 @@
+- hosts: master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: set join command
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+
+- hosts: workers
+  become: yes
+  tasks:
+    - name: reset the cluster
+      shell: kubeadm reset -f
+      args:
+        chdir: $HOME
+    - name: Remove file ca.crt
+      ansible.builtin.file:
+        path: /etc/kubernetes/pki/ca.crt
+        state: absent
+    - name: Remove file kubelet.conf
+      ansible.builtin.file:
+        path: /etc/kubernetes/kubelet.conf
+        state: absent
+    - name: turn swop off
+      shell: swapoff -a
+    - name: join cluster
+      shell: "{{ hostvars['master'].join_command }}"
+      args:
+        chdir: $HOME
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+        PATH: /usr/sbin:/usr/local/bin:/usr/bin:/bin
+
