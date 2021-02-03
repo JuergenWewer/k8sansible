@@ -1,0 +1,6 @@
+
+*.key
+*.p12
+*.jks
+*password*
+.idea
