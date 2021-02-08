@@ -36,27 +36,25 @@
     - name: copy admin.conf to user's kube config, if it exists
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/sammy/.kube/config
+        dest: /home/jwewer/.kube/config
         remote_src: yes
-        owner: sammy
+        owner: jwewer
       when: file.stat.exists
 
-    - name: install Pod network weave
-      become: yes
-      become_user: sammy
-      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-      args:
-        chdir: $HOME
+#    - name: install Pod network weave
+#      become: yes
+#      become_user: sammy
+#      shell: kubectl apply -f "https://cloud.weave.works/k8s/v1.16/net.yaml"
+#      args:
+#        chdir: $HOME
 
     - name: check if /etc/kubernetes/admin.conf exists
       stat: path=/etc/kubernetes/admin.conf
       register: file
 
-    - name: copy admin.conf to user's kube config, if it exists
-      copy:
+    - name: copy k8s admin.conf to controller computer
+      fetch:
         src: /etc/kubernetes/admin.conf
-        dest: /media/psf/Home/.kube/config
-        remote_src: yes
-        owner: sammy
+        dest: /home/Administrator/.kube/
       when: file.stat.exists
 

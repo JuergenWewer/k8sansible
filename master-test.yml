@@ -1,0 +1,9 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: copy k8s admin.conf to controller computer
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/Administrator/.kube/
+
+

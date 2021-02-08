@@ -1,4 +1,4 @@
-To setup the server:
+﻿To setup the server:
 
 1. install debian 10
 danach ist apt-get verfügbar,
@@ -11,7 +11,7 @@ ssh-keygen
 sudo apt-get install openssh-server ii.
 sudo service ssh status
 vim /etc/ssh/sshd_config
-PermitRootLogin yes
+PermitRootLogin yesssh
 /etc/init.d/ssh restart
 
 4. public key auf allen Knoten kopieren
@@ -31,20 +31,22 @@ check:
 ansible --version
 
 6. Ansible hosts
-~/Optimal/kube-cluster/hosts
+hosts
 
 7. Ansible: create non root users
-~/Optimal/kube-cluster/initial.yml
+initial.yml
 
-ansible-playbook -i hosts ~/Optimal/kube-cluster/initial.yml
+ansible-playbook -i hosts initial.yml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 8. Ansible: install dependencies (docker) and the 3 kubernetes components kubeadm, kubelet and kubectl
 
-ansible-playbook -i hosts ~/Optimal/kube-cluster/kube-dependencies.yml
+Achtung: auf master: apt-get install acl
+
+ansible-playbook -i hosts kube-dependencies.yml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 9. Create the master node
 
-ansible-playbook -i hosts ~/Optimal/kube-cluster/master.yml
+ansible-playbook -i hosts master.yml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 10. create workers nodes
 
@@ -70,3 +72,17 @@ systemctl restart docker
 
 To delete configuration and/or data files of etcd and it's dependencies from Ubuntu Xenial then execute:
 sudo apt-get autoremove --purge etcd
+
+ssh jwewer@10.0.1.51
+
+exort KUBECONFIG=/etc/kubernetes/admin.conf
+
+sudo mkdir ~/.kube
+sudo cp /etc/kubernetes/admin.conf ~/.kube/
+
+cd ~/.kube
+
+sudo mv admin.conf config
+sudo service kubelet restart
+
+kubectl apply -f "https://cloud.weave.works/k8s/v1.16/net.yaml?env.IPALLOC_RANGE=11.32.0.0/12"
