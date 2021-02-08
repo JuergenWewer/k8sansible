@@ -85,4 +85,5 @@ cd ~/.kube
 sudo mv admin.conf config
 sudo service kubelet restart
 
+ansible-playbook -i hosts master.yml -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 kubectl apply -f "https://cloud.weave.works/k8s/v1.16/net.yaml?env.IPALLOC_RANGE=11.32.0.0/12"
