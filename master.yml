@@ -5,6 +5,22 @@
       shell: kubeadm reset -f
       args:
         chdir: $HOME
+    - name: stop docker
+      shell: systemctl stop docker
+    - name: copy docker.service to set cgroup to systemd
+      copy:
+        src: docker.service
+        dest: /usr/lib/systemd/system/docker.service
+        remote_src: no
+        owner: root
+    - name: remove /etc/docker/daemon.json
+      ansible.builtin.file:
+        path: etc/docker/daemon.json
+        state: absent
+    - name: reload all deamons
+      shell: systemctl daemon-reload
+    - name: restart docker
+      shell: systemctl restart docker
     - name: Remove file ca.crt
       ansible.builtin.file:
         path: /etc/kubernetes/pki/ca.crt
