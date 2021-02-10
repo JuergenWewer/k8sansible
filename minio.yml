@@ -1,6 +1,13 @@
 - hosts: master
   become: yes
   tasks:
+    - name: create .kube/minio directory
+      become: yes
+      become_user: jwewer
+      file:
+        path: $HOME/.kube/minio
+        state: directory
+        mode: 0755
     - name: copy pv-0 from controll to host
       copy:
         src: minio/pv-0.yml
