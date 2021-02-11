@@ -4,10 +4,10 @@ metadata:
   name: pv-50-0
 spec:
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Recycle
   hostPath:
-    path: /dev/sdb1/data/minio-volume-0/
+    path: /data/minio-volume-0/
