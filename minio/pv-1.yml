@@ -15,5 +15,5 @@ spec:
     - hard
     - nfsvers=4.1
   nfs:
-    path: /tmp/m1
-    server: 10.211.55.4
+    path: /tmp/minio/minio-volume-1/
+    server: 10.0.1.51

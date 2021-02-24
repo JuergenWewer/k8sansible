@@ -3,19 +3,19 @@
   tasks:
     - name: delete statefulset minio
       become: yes
-      become_user: sammy
+      become_user: jwewer
       shell: kubectl delete statefulset minio --ignore-not-found=true
       args:
         chdir: $HOME
     - name: delete minio pvc
       become: yes
-      become_user: sammy
+      become_user: jwewer
       shell: kubectl delete pvc -l app=minio
       args:
         chdir: $HOME
     - name: delete minio pv
       become: yes
-      become_user: sammy
+      become_user: jwewer
       shell: kubectl delete pv -l app=minio
       args:
         chdir: $HOME

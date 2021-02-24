@@ -42,25 +42,25 @@ ansible-playbook -i hosts initial.yml  -v --extra-vars "ansible_sudo_pass=OSVHyu
 
 Achtung: auf master: apt-get install acl
 
-ansible-playbook -i hosts kube-dependencies.yml  -v 
+ansible-playbook -i hosts kube-dependencies.yml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 9. Create the master node
 
-ansible-playbook -i hosts master.yml  -v 
+ansible-playbook -i hosts master.yml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 10. create workers nodes
 
-ansible-playbook -i hosts workers.yml -v
+ansible-playbook -i hosts workers.yml -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 --------------------------------- if minio should be installed -----------------------
 
 11. install nfs dependencies
 
-ansible-playbook -i hosts nfs-dependencies.yml -v
+ansible-playbook -i hosts nfs-dependencies.yml -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 12. install minio
 
-ansible-playbook -i hosts minio.yml -v
+ansible-playbook -i hosts minio.yml -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
 
 http://10.211.55.4:31251/minio/login
 
