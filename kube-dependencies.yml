@@ -31,6 +31,7 @@
    - name: install Docker
      apt:
        name: "docker-ce=5:19.03.14~3-0~debian-stretch"
+       force: yes
        state: present
        update_cache: true
 

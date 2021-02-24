@@ -2,6 +2,8 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: pv-50-1
+  labels:
+    app: minio
 spec:
   capacity:
     storage: 10Gi
@@ -9,5 +11,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Recycle
-  hostPath:
-    path: /mnt/minio/minio-volume-1/
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /tmp/m1
+    server: 10.211.55.4

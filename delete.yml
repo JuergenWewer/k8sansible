@@ -1,0 +1,52 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: delete statefulset minio
+      become: yes
+      become_user: sammy
+      shell: kubectl delete statefulset minio --ignore-not-found=true
+      args:
+        chdir: $HOME
+    - name: delete minio pvc
+      become: yes
+      become_user: sammy
+      shell: kubectl delete pvc -l app=minio
+      args:
+        chdir: $HOME
+    - name: delete minio pv
+      become: yes
+      become_user: sammy
+      shell: kubectl delete pv -l app=minio
+      args:
+        chdir: $HOME
+    - name: reset the cluster
+      shell: kubeadm reset -f
+      args:
+        chdir: $HOME
+    - name: stop docker
+      shell: systemctl stop docker
+    - name: Remove file ca.crt
+      ansible.builtin.file:
+        path: /etc/kubernetes/pki/ca.crt
+        state: absent
+    - name: Remove file kubelet.conf
+      ansible.builtin.file:
+        path: /etc/kubernetes/kubelet.conf
+        state: absent
+- hosts: workers
+  become: yes
+  tasks:
+    - name: reset the cluster
+      shell: kubeadm reset -f
+      args:
+        chdir: $HOME
+    - name: stop docker
+      shell: systemctl stop docker
+    - name: Remove file ca.crt
+      ansible.builtin.file:
+        path: /etc/kubernetes/pki/ca.crt
+        state: absent
+    - name: Remove file kubelet.conf
+      ansible.builtin.file:
+        path: /etc/kubernetes/kubelet.conf
+        state: absent

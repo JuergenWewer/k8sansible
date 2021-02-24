@@ -3,7 +3,7 @@
   tasks:
     - name: create .kube/minio directory
       become: yes
-      become_user: jwewer
+      become_user: sammy
       file:
         path: $HOME/.kube/minio
         state: directory
@@ -11,62 +11,62 @@
     - name: copy pv-0 from controll to host
       copy:
         src: minio/pv-0.yml
-        dest: /home/jwewer/.kube/minio/pv-0.yml
+        dest: /home/sammy/.kube/minio/pv-0.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
     - name: install pv-0
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/minio/pv-0.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/minio/pv-0.yml
       args:
         chdir: $HOME
     - name: copy pv-1 from controll to host
       copy:
         src: minio/pv-1.yml
-        dest: /home/jwewer/.kube/minio/pv-1.yml
+        dest: /home/sammy/.kube/minio/pv-1.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
     - name: install pv-1
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/minio/pv-1.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/minio/pv-1.yml
       args:
         chdir: $HOME
     - name: copy pv-2 from controll to host
       copy:
         src: minio/pv-2.yml
-        dest: /home/jwewer/.kube/minio/pv-2.yml
+        dest: /home/sammy/.kube/minio/pv-2.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
     - name: install pv-2
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/minio/pv-2.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/minio/pv-2.yml
       args:
         chdir: $HOME
     - name: copy pv-3 from controll to host
       copy:
         src: minio/pv-3.yml
-        dest: /home/jwewer/.kube/minio/pv-3.yml
+        dest: /home/sammy/.kube/minio/pv-3.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
     - name: install pv-3
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/minio/pv-3.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/minio/pv-3.yml
       args:
         chdir: $HOME
 
     - name: copy minio.yml from controll to host
       copy:
         src: minio/minio.yml
-        dest: /home/jwewer/.kube/minio/minio.yml
+        dest: /home/sammy/.kube/minio/minio.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
     - name: install minio service
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/minio/minio.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/minio/minio.yml
       args:
         chdir: $HOME
 

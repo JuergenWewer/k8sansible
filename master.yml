@@ -39,7 +39,7 @@
 
     - name: create .kube directory
       become: yes
-      become_user: jwewer
+      become_user: sammy
       file:
         path: $HOME/.kube
         state: directory
@@ -52,22 +52,22 @@
     - name: copy admin.conf to user's kube config, if it exists
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/jwewer/.kube/config
+        dest: /home/sammy/.kube/config
         remote_src: yes
-        owner: jwewer
+        owner: sammy
       when: file.stat.exists
 
     - name: copy weave.yml from controll to host
       copy:
         src: weave.yml
-        dest: /home/jwewer/.kube/weave.yml
+        dest: /home/sammy/.kube/weave.yml
         remote_src: no
-        owner: jwewer
+        owner: sammy
 
     - name: install Pod network weave
       become: yes
-      become_user: jwewer
-      shell: kubectl apply -f /home/jwewer/.kube/weave.yml
+      become_user: sammy
+      shell: kubectl apply -f /home/sammy/.kube/weave.yml
       args:
         chdir: $HOME
 
@@ -75,11 +75,18 @@
       stat: path=/etc/kubernetes/admin.conf
       register: file
 
+    - name: ensure custom facts directory exists
+      file: >
+        path=/Users/wewer/.kube/config/master
+        recurse=yes
+        state=directory
     - name: copy k8s admin.conf to controller computer, if it exists
       fetch:
         src: /etc/kubernetes/admin.conf
-        dest: /home/Administrator/.kube/
+        dest: /Users/wewer/.kube/config
         remote_src: yes
-        owner: jwewer
+        owner: sammy
       when: file.stat.exists
 
+    - name: set env variable
+      shell: export KUBECONFIG=/Users/wewer/.kube/config/master/etc/kubernetes/admin.conf
