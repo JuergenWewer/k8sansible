@@ -1,0 +1,7 @@
+installdir: /cygwin64/home/Administrator/workspace/yuuvis
+exports: exports-optimal
+mountdirs: ./nfs/mountdirs-optimal
+pvs: persistentvolumes/pvs-optimal.yml
+ansible_sudo_pass: OSVHyuuvis2021!
+user: jwewer
+configdir: /cygwin64/home/Administrator/.kube

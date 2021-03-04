@@ -11,8 +11,11 @@ ssh-keygen
 sudo apt-get install openssh-server ii.
 sudo service ssh status
 vim /etc/ssh/sshd_config
-PermitRootLogin yesssh
+PermitRootLogin yes
 /etc/init.d/ssh restart
+   
+auf host prüfen:
+ssh -V
 
 4. public key auf allen Knoten kopieren
 ssh-copy-id root@10.211.55.4
@@ -46,11 +49,20 @@ ansible-playbook -i hosts kube-dependencies.yml  -v
 
 9. Create the master node
 
-ansible-playbook -i hosts master.yml  -v 
+ansible-playbook -i hosts master.yml  -v
+
+ansible-playbook -i macpro master.yml  -v
+export KUBECONFIG=/Users/wewer/.kube/master/etc/kubernetes/admin.conf
+
+ansible-playbook -i optimal master.yml  -v
+export KUBECONFIG=/cygwin64/home/Administrator/.kube/master/etc/kubernetes/admin.conf
 
 10. create workers nodes
 
 ansible-playbook -i hosts workers.yml -v
+
+ansible-playbook -i macpro workers.yml  -v
+ansible-playbook -i optimal workers.yml  -v
 
 --------------------------------- if minio should be installed -----------------------
 
@@ -64,6 +76,9 @@ ansible-playbook -i hosts minio.yml -v
 
 http://10.211.55.4:31251/minio/login
 
+13. delete the cluster
+
+ansible-playbook -i hosts delete.yml -v
 
 
 Voraussetzungen debian für nfs:
@@ -159,7 +174,8 @@ sudo apt-get autoremove --purge etcd
 ssh jwewer@10.0.1.51
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
-export KUBECONFIG=/Users/wewer/.kube/config/master/etc/kubernetes/admin.conf
+export KUBECONFIG=/Users/wewer/.kube/master/etc/kubernetes/admin.conf
+export KUBECONFIG=/cygwin64/home/Administrator/.kube/master/etc/kubernetes/admin.conf
 sudo mkdir ~/.kube
 sudo cp /etc/kubernetes/admin.conf ~/.kube/
 
@@ -168,3 +184,8 @@ cd ~/.kube
 sudo mv admin.conf config
 sudo service kubelet restart
 
+knoten herunterfahren
+
+kubectl get nodes
+kubectl drain igel --delete-local-data --ignore-daemonsets
+kubectl uncordon igel
