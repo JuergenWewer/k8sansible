@@ -37,6 +37,20 @@
        name: nfs-kernel-server
        state: present
        force: yes
+   - name: stop nfs
+     shell: systemctl stop nfs-kernel-server
+   - name: copy nfs-kernel-server to set nfs versions
+     copy:
+       src: nfs-kernel-server
+       dest: /etc/default/nfs-kernel-server
+       remote_src: no
+       owner: root
+   - name: set rpcbind service
+     shell: systemctl mask rpcbind.service
+   - name: set rpcbind socket
+     shell: systemctl mask rpcbind.socket
+   - name: start nfs
+     shell: systemctl start nfs-kernel-server
    - name: remove /etc/exports
      ansible.builtin.file:
        path: etc/exports
