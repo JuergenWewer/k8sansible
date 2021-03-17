@@ -86,7 +86,7 @@
         dest: "{{ configdir }}"
         remote_src: yes
         owner: "{{ user }}"
-      when: "{{ inventory_hostname == 'macpro' }}"
+      when: file.stat.exists
 
     - name: set env variable
       shell: export KUBECONFIG="{{ configdir }}"/etc/kubernetes/admin.conf

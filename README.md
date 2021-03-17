@@ -104,7 +104,17 @@ auf jedem Knoten:
 ansible-playbook -i macpro master.yaml  -v
 export KUBECONFIG=/Users/wewer/.kube/master/etc/kubernetes/admin.conf
 
-ansible-playbook -i optimal master.yaml  -v --extra-vars "ansible_sudo_pass=OSVHyuuvis2021!"
+auf optimal:
+ssh jwewer@10.0.1.51
+ansible-playbook -i optimal master.yaml  -v 
+sudo chmod 777 /etc/kubernetes/admin.conf
+exit
+
+cd .kube/master/etc/kubernetes
+sftp jwewer@10.0.1.51
+cd /etc/kubernetes
+get admin.conf
+
 export KUBECONFIG=/cygwin64/home/Administrator/.kube/master/etc/kubernetes/admin.conf
 
 10. create workers nodes

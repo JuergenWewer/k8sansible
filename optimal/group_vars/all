@@ -4,4 +4,5 @@ mountdirs: ./nfs/mountdirs-optimal
 pvs: persistentvolumes/pvs-optimal.yml
 ansible_sudo_pass: OSVHyuuvis2021!
 user: jwewer
-configdir: /cygwin64/home/Administrator/.kube
+configdir: /home/jwewer
+controlconfigdir: /cygwin64/home/Administrator/.kube
