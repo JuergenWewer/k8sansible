@@ -18,20 +18,67 @@ auf host prüfen:
 ssh -V
 
 4. public key auf allen Knoten kopieren
+
 ssh-copy-id root@10.211.55.4
+ssh-copy-id jwewer@10.0.1.51
 
 danach auf remote einloggen:
 
 ssh root@10.211.55.4
+ssh jwewer@10.0.1.51
 -> exit
-ssh-copy-id root@10.211.55.4
--> exit
+
+das auf allen maschinen wiederholen
+5.a check if git is installed
+
+git --version
+
+if not:
+
+sudo apt update
+sudo apt install git
 
 5. Ansible auf lokalem Recher installieren
 
 sudo -H pip3 install ansible
 check:
 ansible --version
+
+5.b Ansible auf debian 10 installieren
+
+--kann vermutlich uebersprungen werden und nach installation von pip3 mit 
+5.b.2 fortgefahren werden
+
+sudo apt update
+sudo apt install ansible -y
+
+5.b.1 install pip3
+
+sudo apt install python3-pip
+
+check pip3 --version
+now we can upgrade to ansible 2.10
+
+
+dpkg --list
+sudo apt-get remove ansible
+
+5.b.2 install ansible 2.10
+
+pip3 install ansible
+ansible will be installed in ~/.local/bin
+export PATH="$PATH:$HOME/.local/bin
+
+ansible-galaxy collection install community.kubernetes
+
+5.c helm auf debian 10 installieren
+
+
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
 
 6. Ansible hosts
 hosts
@@ -49,12 +96,17 @@ ansible-playbook -i hosts kube-dependencies.yml  -v
 
 9. Create the master node
 
+wenn die Knoten neu gestartet wurden:
+auf jedem Knoten:
+/etc/init.d/network-manager restart
+
+
 ansible-playbook -i hosts master.yml  -v
 
-ansible-playbook -i macpro master.yml  -v
+ansible-playbook -i macpro master.yaml  -v
 export KUBECONFIG=/Users/wewer/.kube/master/etc/kubernetes/admin.conf
 
-ansible-playbook -i optimal master.yml  -v
+ansible-playbook -i optimal master.yaml  -v
 export KUBECONFIG=/cygwin64/home/Administrator/.kube/master/etc/kubernetes/admin.conf
 
 10. create workers nodes
