@@ -1,0 +1,17 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: reset the cluster
+      shell: kubeadm reset -f
+      args:
+        chdir: $HOME
+    - name: stop docker
+      shell: systemctl stop docker
+    - name: Remove file ca.crt
+      ansible.builtin.file:
+        path: /etc/kubernetes/pki/ca.crt
+        state: absent
+    - name: Remove file kubelet.conf
+      ansible.builtin.file:
+        path: /etc/kubernetes/kubelet.conf
+        state: absent
