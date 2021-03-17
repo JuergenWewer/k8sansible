@@ -86,7 +86,19 @@
         dest: "{{ configdir }}"
         remote_src: yes
         owner: "{{ user }}"
-      when: file.stat.exists
+      when: "{{ inventory_hostname == 'macpro' }}"
 
     - name: set env variable
       shell: export KUBECONFIG="{{ configdir }}"/etc/kubernetes/admin.conf
+
+- hosts: lens
+  become: yes
+  tasks:
+    - name: copy k8s admin.conf to controller computer, if it exists
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: "{{ configdir }}"
+        remote_src: yes
+        owner: "{{ user }}"
+      when: file.stat.exists
+
