@@ -227,6 +227,7 @@ and restart docker:
 systemctl daemon-reload
 systemctl restart docker
 
+wenn beim initialisieren des clusters die fehlermeldung kommt port 2379 und 2380 belegt:
 To delete configuration and/or data files of etcd and it's dependencies from Ubuntu Xenial then execute:
 sudo apt-get autoremove --purge etcd
 
